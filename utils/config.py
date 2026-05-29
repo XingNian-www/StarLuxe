@@ -37,7 +37,7 @@ default = {
         "genshin_impact": {
             "icon_path": "assets/games/GI.png",
             "folder": "",
-            "exe": "GenshinImpact.exe",
+            "exe": "YuanShen.exe",
             "subpath": ""
         },
         "honkai_star_rail": {

@@ -6,11 +6,11 @@
 # data-files: include non-Python files in the distribution
 - module-name: __main__
   data-files:
-    dirs:
-      - 'assets'
-      - 'themes'
+    - dirs:
+        - 'assets'
+        - 'themes'
 
-    patterns:
-      - 'script/*.*'
-      - 'resources/addon/*.*'
-      - 'resources/standard/*.*'
+    - patterns:
+        - 'script/*.*'
+        - 'resources/addon/*.*'
+        - 'resources/standard/*.*'
