@@ -4,8 +4,8 @@ from pathlib import Path
 
 def resource_path(relative_path: str) -> Path:
     """Return the absolute path to a resource, working both in development mode and when packaged."""
-    if getattr(sys, 'frozen', False):
-        base_path = Path(__file__).parent
+    if "__compiled__" in globals() or getattr(sys, "frozen", False):
+        base_path = Path(sys.executable).parent
     else:
         base_path = Path(__file__).parent.parent.resolve()
 
@@ -14,10 +14,9 @@ def resource_path(relative_path: str) -> Path:
 
 def relative_path(relative_path: str) -> Path:
     """Return relative path to the resource file"""
-    if getattr(sys, "frozen", False):
-        base = getattr(sys, "_MEIPASS", os.path.dirname(sys.executable))
+    if "__compiled__" in globals() or getattr(sys, "frozen", False):
+        base = Path(sys.executable).parent
     else:
         base = Path(__file__).parent.parent.resolve()
 
     return Path(base) / relative_path
-

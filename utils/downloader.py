@@ -6,8 +6,15 @@ from pathlib import Path
 from utils.path import resource_path
 from packaging import version
 from win32api import GetFileVersionInfo, LOWORD, HIWORD
-from utils import _env
 # from config import load_config
+
+try:
+    from utils import _env
+except ImportError:
+    _env = None
+
+DEFAULT_DEPENDENCY_URL = "https://starluxe-dl.pages.dev/reshade-shaders.zip"
+DEFAULT_USER_AGENT = "StarLuxe"
 
 logger = logging.getLogger(__name__)
 
@@ -150,6 +157,8 @@ def download_from_github(repo_owner, repo_name, resource, selected_preset, downl
 def download_dependencies(directory, progress_callback=None):
     file_name = "reshade-shaders.zip"
     progress_callback = progress_callback or (lambda x: None) # Use the given callback or an empty function
+    download_url = getattr(_env, "BASE_URL", DEFAULT_DEPENDENCY_URL)
+    user_agent = getattr(_env, "USER_AGENT", DEFAULT_USER_AGENT)
 
     validation_items = {
         ConnectionError: "Failed to connect to the server!",
@@ -168,7 +177,7 @@ def download_dependencies(directory, progress_callback=None):
         progress_callback(0.1)
 
         logger.info(f"Downloading {file_name}...")
-        response = requests.get(_env.BASE_URL, stream=True, headers={"User-Agent": _env.USER_AGENT}, timeout=30)
+        response = requests.get(download_url, stream=True, headers={"User-Agent": user_agent}, timeout=30)
         response.raise_for_status()
 
         total_size = int(response.headers.get("content-length", 0))
